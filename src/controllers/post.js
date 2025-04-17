@@ -1,10 +1,15 @@
 /** @format */
-const Post = require('../models/postModel');
+const Post = require('../models/userModel');
 // view all posts logic/endpoint
 const allPost = async (req, res) => {
   try {
     // all post
     const allPost = await Post.find();
+    if (!allPost.length) {
+      return res
+        .status(404)
+        .json({ status: 'error', message: 'Post not found' });
+    }
 
     return res.status(200).json({
       status: 'success',
@@ -39,7 +44,9 @@ const getAPost = async (req, res) => {
     const post = await Post.findById(req.params.id);
 
     if (!post) {
-      res.status(404).json({ status: 'error', message: 'Post not found' });
+      return res
+        .status(404)
+        .json({ status: 'error', message: 'Post not found' });
     }
 
     return res.status(200).json({
@@ -52,19 +59,20 @@ const getAPost = async (req, res) => {
   }
 };
 
-const updatePost = (req, res) => {
+const updatePost = async (req, res) => {
   try {
-    const post = posts.find((r) => r.id === parseInt(req.params.id));
+    const { title, content } = req.body;
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { title, content },
+      { new: true }
+    );
     if (!post)
       return res
         .status(404)
         .json({ status: 'error', message: 'Post not found' });
 
-    const { title, content } = req.body;
-    if (title) post.title = title;
-    if (content) post.content = content;
-
-    res.status(200).json({
+    return res.status(200).json({
       status: 'success',
       message: 'Post updated successfully',
     });
@@ -73,17 +81,16 @@ const updatePost = (req, res) => {
   }
 };
 
-const deletePost = (req, res) => {
+const deletePost = async (req, res) => {
   try {
-    const post = posts.findIndex((m) => m.id === parseInt(req.params.id));
+    const post = await Post.findByIdAndDelete(req.params.id);
     if (!post)
       return res
         .status(404)
         .json({ status: 'error', message: 'post not found' });
 
-    posts.splice(post, 1);
-    res
-      .status(204)
+    return res
+      .status(200)
       .json({ status: 'success', message: 'Post deleted successfully' });
   } catch (error) {
     return res.status(500).json({ status: 'error', message: error.message });

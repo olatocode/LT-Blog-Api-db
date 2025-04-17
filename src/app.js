@@ -9,6 +9,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
+
 const connectDB = require('./database/db');
 
 
@@ -29,6 +31,7 @@ app.get('/', (req, res) => {
 
 // versioning
 app.use('/api/v1', postRouter);
+app.use('/api/v1', userRouter);
 
 app.listen(PORT, () => {
   console.log(`Server connected to http://localhost:${PORT}`);
