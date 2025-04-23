@@ -13,7 +13,6 @@ const userRouter = require('./routes/user');
 
 const connectDB = require('./database/db');
 
-
 // express middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

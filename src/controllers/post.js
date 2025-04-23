@@ -1,5 +1,5 @@
 /** @format */
-const Post = require('../models/userModel');
+const Post = require('../models/postModel');
 // view all posts logic/endpoint
 const allPost = async (req, res) => {
   try {
