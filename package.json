@@ -1,18 +1,18 @@
 {
   "name": "lt-blog-api-db",
   "version": "1.0.0",
-  "description": "Building Blog APIs",
+  "description": "Building Blog APIs part 2",
   "keywords": [
     "Blog",
     "APIs"
   ],
-  "homepage": "https://github.com/olatocode/-LT-Blog-Api#readme",
+  "homepage": "https://github.com/olatocode/LT-Blog-Api-db.git#readme",
   "bugs": {
-    "url": "https://github.com/olatocode/-LT-Blog-Api/issues"
+    "url": "https://github.com/olatocode/LT-Blog-Api-db.git/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/olatocode/-LT-Blog-Api.git"
+    "url": "git+https://github.com/olatocode/LT-Blog-Api-db.git"
   },
   "license": "ISC",
   "author": "Tobi Awosola",
