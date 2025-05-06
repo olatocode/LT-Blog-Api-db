@@ -25,7 +25,7 @@ const PORT = process.env.PORT;
 connectDB();
 // base url
 app.get('/', (req, res) => {
-  res.status(200).json({ data: 'Welcome To Blog Api' });
+  res.send({ data: 'Welcome To Blog Api' });
 });
 
 // versioning

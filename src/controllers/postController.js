@@ -16,7 +16,7 @@ const allPost = async (req, res) => {
     //   message: 'All posts view successfully',
     //   data: allPost,
     // });
-      return res.status(200).send(allPost);
+      return res.send(allPost);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: error.message });
