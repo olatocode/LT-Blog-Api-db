@@ -11,14 +11,14 @@ const allPost = async (req, res) => {
         .json({ status: 'error', message: 'Post not found' });
     }
 
-    return res.status(200).json({
+    return res.status(200).send({
       status: 'success',
       message: 'All posts view successfully',
       data: allPost,
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send({ status: 'error', message: error.message });
+    return res.status(500).json({ status: 'error', message: error.message });
   }
 };
 
