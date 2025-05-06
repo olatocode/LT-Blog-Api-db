@@ -18,7 +18,7 @@ const allPost = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ status: 'error', message: error.message });
+    return res.status(500).send({ status: 'error', message: error.message });
   }
 };
 
