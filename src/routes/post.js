@@ -7,15 +7,15 @@ const {
   getAPost,
   updatePost,
   deletePost,
-} = require('../controllers/post');
+} = require('../controllers/postController');
 const { validatePost, validateErrors } = require('../validation/post');
-const authenticateJWT = require('../middleware/authMiddleware');
+const { authenticate, authorize} = require('../middleware/authMiddleware');
 const router = express.Router();
 
-router.get('/posts', authenticateJWT, allPost);
-router.post('/posts', validatePost, authenticateJWT, validateErrors, addPost);
-router.get('/posts/:id', getAPost);
-router.patch('/posts/:id', updatePost);
-router.delete('/posts/:id', deletePost);
+router.get('/posts', authenticate, allPost);
+router.post('/posts', validatePost, authenticate, authorize('admin') ,validateErrors, addPost);
+router.get('/posts/:id', authenticate, getAPost);
+router.patch('/posts/:id', authenticate, authorize('admin'), updatePost);
+router.delete('/posts/:id', authenticate, authorize('admin'), deletePost);
 
 module.exports = router;

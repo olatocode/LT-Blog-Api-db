@@ -9,6 +9,11 @@ const postSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    // required: true,
+  },
 });
 
 // convert the schema to model

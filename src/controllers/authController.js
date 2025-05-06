@@ -1,13 +1,14 @@
 /** @format */
 const User = require('../models/userModel');
-const bcrypt = require("bcryptjs")
-const jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const registerUser = async (req, res) => {
   try {
-    const { firstname, lastname, phone_no, gender, email, password } = req.body;
-     // validate data
+    const { firstname, lastname, phone_no, gender, email, password, role } =
+      req.body;
+    // validate data
     if (
       !firstname ||
       !lastname ||
@@ -42,6 +43,7 @@ const registerUser = async (req, res) => {
       gender,
       email,
       password: hashPassword,
+      role,
     });
 
     return res.status(201).json({
@@ -55,47 +57,46 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-   try {
-     const { email, password } = req.body;
-     // check user is found
-     const user = await User.findOne({ email });
-     if (!user) {
-         return res.status(404).json({
-           status: 'error',
-           message: 'User not found',
-         });
-     }
-     // user and password match
-     const isMatch = await bcrypt.compare(password, user.password);
-     if (!isMatch) {
-       return res.status(401).json({
-         status: 'error',
-         message: 'invalid credentials',
-       });
+  try {
+    const { email, password } = req.body;
+    // check user is found
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'User not found',
+      });
+    }
+    // user and password match
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'invalid credentials',
+      });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      JWT_SECRET_KEY,
+      { expiresIn: '1h' }
+    );
+
+     if (!token) {
+       return res.status(401).send('Invalid credentials');
      }
 
-     const token = jwt.sign(
-       { id: user.id, email: user.email },
-       JWT_SECRET_KEY,
-       { expiresIn: '1h' }
-     );
-
-    //  if (!token) {
-    //    return res.status(401).send('Invalid credentials');
-    //  }
-   
     return res.status(200).json({
       status: 'success',
       message: 'Login successful',
-      token: token
+      token: token,
     });
-
-   } catch (error) {
-     res.status(500).json({ status: 'error', message: error.message });
-   }
- }
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+};
 
 module.exports = {
   registerUser,
-  loginUser
+  loginUser,
 };
