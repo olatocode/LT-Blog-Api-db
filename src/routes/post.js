@@ -12,7 +12,7 @@ const { validatePost, validateErrors } = require('../validation/post');
 const { authenticate, authorize} = require('../middleware/authMiddleware');
 const router = express.Router();
 
-router.get('/posts', authenticate, allPost);
+router.get('/posts', allPost);
 router.post('/posts', validatePost, authenticate, authorize('admin') ,validateErrors, addPost);
 router.get('/posts/:id', authenticate, getAPost);
 router.patch('/posts/:id', authenticate, authorize('admin'), updatePost);
