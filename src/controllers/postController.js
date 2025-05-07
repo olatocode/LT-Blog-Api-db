@@ -3,29 +3,44 @@ const Post = require('../models/postModel');
 // view all posts logic/endpoint
 const allPost = async (req, res) => {
   try {
-    // all post
-    const allPost = await Post.find();
-    if (!allPost.length) {
-      return res
-        .status(404)
-        .json({ status: 'error', message: 'Post not found' });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const options = {
+      page,
+      limit,
+      sort: { createdAt: -1 }, 
+    };
+
+    const result = await Post.paginate({}, options);
+
+    if (!result.docs.length) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'No posts found',
+      });
     }
 
-    // return res.status(200).json({
-    //   status: 'success',
-    //   message: 'All posts view successfully',
-    //   data: allPost,
-    // });
-      return res.send(allPost);
+    return res.status(200).json({
+      status: 'success',
+      message: 'All posts retrieved successfully',
+      data: result.docs,
+      totalPost: result.totalDocs,
+      totalPages: result.totalPages,
+      currentPage: result.page,
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ status: 'error', message: error.message });
+    console.error(error);
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
   }
 };
 
 const addPost = async (req, res) => {
   try {
-    const { title, content,author } = req.body;
+    const { title, content, author } = req.body;
     // Post.create(req.body);
     // create a new post
     const newPost = await Post.create({ title, content, author });
