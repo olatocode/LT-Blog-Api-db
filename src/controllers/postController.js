@@ -40,10 +40,10 @@ const allPost = async (req, res) => {
 
 const addPost = async (req, res) => {
   try {
-    const { title, content, author } = req.body;
+    const { title, content } = req.body;
     // Post.create(req.body);
     // create a new post
-    const newPost = await Post.create({ title, content, author });
+    const newPost = await Post.create({ title, content });
 
     res.status(201).json({
       status: 'success',

@@ -19,3 +19,5 @@ router.patch('/posts/:id', authenticate, authorize('admin'), updatePost);
 router.delete('/posts/:id', authenticate, authorize('admin'), deletePost);
 
 module.exports = router;
+
+
